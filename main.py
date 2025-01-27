@@ -1,4 +1,9 @@
 import click
+import json
+
+
+data = {}
+data["clientes"]= []
 
 @click.group
 def main():
@@ -23,8 +28,15 @@ def delete_user():
 @click.option("active", "-a", default=True)
 @click.option("password", "-p", hide_input=True, prompt="ingrese su contraseña" )
 def create_user(name, lastName, active, password):
-
-    print(f"hola {name} {lastName},{active}, {password}")
+    data["clientes"].append({
+        "nombre": f"{name}",
+        "apellido": f"{lastName}",
+        "activate": f"{active}",
+        "password": f"{password}"
+    })
+    print(f"se creo el usuario de {name}")
+    with open("data.json", "w") as file:
+        json.dump(data, file, indent=4)
 
 if __name__ == "__main__":
     main()
