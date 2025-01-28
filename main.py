@@ -1,7 +1,7 @@
 from json.decoder import JSONDecodeError
 import click
-import json
-import os
+from src.utils import cargar, guardar, generate_id
+import datetime
 
 
 file_path = "data.json"
@@ -10,58 +10,68 @@ file_path = "data.json"
 def main():
     pass
 
+
+# listar usuarios
 @main.command()
 def list_users():
-    print("lista de usuarios")
+    clientes = cargar()
+    if clientes:
+        for i in clientes:
+            print(f"{i["id"],i["nombre"]}")
+    else:
+        print("no se encontraron clientes")
+
+
+# actualizar usuarios
+@main.command()
+@click.option("id", "-i")
+@click.option("nombre", "-n", prompt="ingrese el nuevo nombre")
+@click.option("lastName", "-l", prompt="ingrese el nuevo apellido")
+def updata_user(id, nombre, lastName):
+    clientes = cargar()
+    nuevos_datos = {
+        "nombre": f"{nombre}",
+        "apellido": f"{lastName}"
+    }
+    id = int(id)
+    for i in clientes:
+        if i["id"] == id:
+            i.update(nuevos_datos)
+            guardar(clientes)
+            print(f"usuario con el id: {id} actualizado")
+            return
+    print(f"usuario con id: {id} no encontrado")
 
 @main.command()
-def updata_user():
-    print("actualizando usuarios")
+@click.argument("id")
+def delete_user(id):
+    clientes = cargar()
+    id = int(id)
+    for i in clientes:
+        if i["id"] == id:
+            clientes.remove(i)
+            guardar(clientes)
+            print(f"usuario con el id: {id} eliminado")
 
-@main.command()
-def delete_user():
-    print("eliminando usuarios")
+
 
 # crear usuarios
-
-def generate_id(clientes):
-    return len(clientes) + 1 if clientes else 1
-
-def cargar():
-    if os.path.exists(file_path):
-        with open(file_path, "r") as file:
-            try:
-                data = json.load(file)
-                if isinstance(data, list):
-                    return data
-            except json.JSONDecodeError:
-                pass
-    return []
-
-def guardar(clientes):
-    with open(file_path, "w") as file:
-        json.dump(clientes,file, indent=4)
-
-
 @main.command()
-@click.option("name", "-n", prompt="ingrese su nombre")
-@click.option("lastName", "-l", default="", prompt="ingrese su apellido")
-@click.option("active", "-a", default=True)
-@click.option("password", "-p", hide_input=True, prompt="ingrese su contraseña" )
-
-def create_user( name, lastName, active, password):
-    clientes = cargar()
-    nuevo_cliente ={
-        "id": generate_id(clientes),
-        "nombre": f"{name}",
-        "apellido": f"{lastName}",
-        "activate": f"{active}",
-        "password": f"{password}"
+@click.option("descripcion", "-d", prompt="ingrese su nombre")
+@click.option("status", "-s", default="in-progress")
+def add( descripcion, status):
+    tasks = cargar()
+    nuevo_task ={
+        "id": generate_id(tasks),
+        "descripcion": f"{descripcion}",
+        "status": f"{status}",
+        "createAt": f"{datetime.datetime.now()}",
+        "updataAt": f"{datetime.datetime.now()}"
     }
 
-    clientes.append(nuevo_cliente)
-    guardar(clientes)
-    click.echo(f"usuario creado")
+    tasks.append(nuevo_task)
+    guardar(tasks)
+    click.echo(f"tarea creada {nuevo_task['descripcion']}  ")
 
 
 if __name__ == "__main__":
