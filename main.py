@@ -41,6 +41,45 @@ def update(id, descripcion):
             return
     print(f"usuario con id: {id} no encontrado")
 
+# todo tasks
+@main.command()
+@click.option("id", "-i")
+def todo(id):
+    tasks = cargar()
+    nuevos_datos = {
+        "status": "todo",
+        "updateAt": f"{datetime.datetime.now()}"
+    }
+    id = int(id)
+    for i in tasks:
+        if i["id"] == id:
+            i.update(nuevos_datos)
+            guardar(tasks)
+            print(f"todo: {i["descripcion"]}")
+            return
+    print(f"tarea con id: {id} no encontrado")
+
+
+
+# complete tasks
+@main.command()
+@click.option("id", "-i")
+def complete(id):
+    tasks = cargar()
+    nuevos_datos = {
+        "status": "complete",
+        "updateAt": f"{datetime.datetime.now()}"
+    }
+    id = int(id)
+    for i in tasks:
+        if i["id"] == id:
+            i.update(nuevos_datos)
+            guardar(tasks)
+            print(f"tarea completada {i["descripcion"]}")
+            return
+    print(f"tarea con id: {id} no encontrado")
+
+
 # eliminar tareas
 @main.command()
 @click.argument("id")
