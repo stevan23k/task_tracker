@@ -11,15 +11,15 @@ def main():
     pass
 
 
-# listar usuarios
+# listar tareas
 @main.command()
-def list_users():
-    clientes = cargar()
-    if clientes:
-        for i in clientes:
-            print(f"{i["id"],i["nombre"]}")
+def list_task():
+    tasks = cargar()
+    if tasks:
+        for i in tasks:
+            print(f"{i["id"],i["descripcion"]}")
     else:
-        print("no se encontraron clientes")
+        print("no se encontraron tareas")
 
 
 # actualizar usuarios
