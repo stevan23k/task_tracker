@@ -17,7 +17,7 @@ def list_task():
     tasks = cargar()
     if tasks:
         for i in tasks:
-            print(f"{i["id"],i["descripcion"]}")
+            print(f"{i["id"],i["descripcion"],i["status"]}")
     else:
         print("no se encontraron tareas")
 
