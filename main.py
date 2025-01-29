@@ -13,7 +13,7 @@ def main():
 
 # listar tareas
 @main.command()
-def list_task():
+def list():
     tasks = cargar()
     if tasks:
         for i in tasks:
@@ -42,16 +42,17 @@ def updata_user(id, nombre, lastName):
             return
     print(f"usuario con id: {id} no encontrado")
 
+# eliminar tareas
 @main.command()
 @click.argument("id")
-def delete_user(id):
-    clientes = cargar()
+def delete_task(id):
+    tasks = cargar()
     id = int(id)
-    for i in clientes:
+    for i in tasks:
         if i["id"] == id:
-            clientes.remove(i)
-            guardar(clientes)
-            print(f"usuario con el id: {id} eliminado")
+            tasks.remove(i)
+            guardar(tasks)
+            print(f"tarea con el id: {id} eliminada")
 
 
 
