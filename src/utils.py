@@ -4,7 +4,13 @@ import os
 file_path = "data.json"
 
 def generate_id(taks):
-    return len(taks) + 1 if taks else 1
+    tasks = cargar()
+    n = []
+    if tasks:
+        for i in tasks:
+            id = i["id"]
+            n.append(id)
+    return n[-1] + 1
 
 def cargar():
     if os.path.exists(file_path):
@@ -19,4 +25,4 @@ def cargar():
 
 def guardar(task):
     with open(file_path, "w") as file:
-        json.dump(task, file, indent=4) 
+        json.dump(task, file, indent=4)
