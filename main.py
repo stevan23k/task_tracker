@@ -17,7 +17,7 @@ def list():
     tasks = cargar()
     if tasks:
         for i in tasks:
-            print(f"{i["id"],i["descripcion"],i["status"]}")
+            print(f"{i["id"],i["descripcion"],i["status"], i["createAt"], i["updateAt"]}")
     else:
         print("no se encontraron tareas")
 
@@ -25,27 +25,26 @@ def list():
 # actualizar usuarios
 @main.command()
 @click.option("id", "-i")
-@click.option("nombre", "-n", prompt="ingrese el nuevo nombre")
-@click.option("lastName", "-l", prompt="ingrese el nuevo apellido")
-def updata_user(id, nombre, lastName):
-    clientes = cargar()
+@click.option("descripcion", "-d", prompt="ingrese la nueva tarea")
+def update(id, descripcion):
+    tasks = cargar()
     nuevos_datos = {
-        "nombre": f"{nombre}",
-        "apellido": f"{lastName}"
+        "descripcion": f"{descripcion}",
+        "updateAt": f"{datetime.datetime.now()}"
     }
     id = int(id)
-    for i in clientes:
+    for i in tasks:
         if i["id"] == id:
             i.update(nuevos_datos)
-            guardar(clientes)
-            print(f"usuario con el id: {id} actualizado")
+            guardar(tasks)
+            print(f"la terea con el id: {id} actualizada")
             return
     print(f"usuario con id: {id} no encontrado")
 
 # eliminar tareas
 @main.command()
 @click.argument("id")
-def delete_task(id):
+def delete(id):
     tasks = cargar()
     id = int(id)
     for i in tasks:
@@ -67,7 +66,7 @@ def add( descripcion, status):
         "descripcion": f"{descripcion}",
         "status": f"{status}",
         "createAt": f"{datetime.datetime.now()}",
-        "updataAt": f"{datetime.datetime.now()}"
+        "updateAt": f"{datetime.datetime.now()}"
     }
 
     tasks.append(nuevo_task)

@@ -10,7 +10,10 @@ def generate_id(taks):
         for i in tasks:
             id = i["id"]
             n.append(id)
-    return n[-1] + 1
+    if n == []:
+        return 1
+    else:
+        return n[-1] + 1
 
 def cargar():
     if os.path.exists(file_path):
