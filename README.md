@@ -11,7 +11,7 @@ git clone https://github.com/stevan23k/task_tracker.git
 
 cd task-tracker
 
-pip install .
+pip install -e .
 
 C:\Users\[user]\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\Scripts
 

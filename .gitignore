@@ -2,3 +2,4 @@ task
 data.json
 __pycache__
 task_tracker.egg-info
+build
